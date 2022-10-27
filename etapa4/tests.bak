@@ -1,0 +1,20 @@
+#lang racket
+(define T1 '((-1 2 2) (-2 1 2) (-2 2 3)))
+(define T2 '( (1 2 2)  (2 1 2)  (2 2 3)))
+(define T3 '((1 -2 2) (2 -1 2) (2 -2 3)))
+
+(define (dot-product X Y)
+  (apply + (map * X Y)))
+
+(define (multiply M V)
+  (map (λ (x) (dot-product V x)) M))
+(define (append-element elem lst)
+  (foldr cons (list elem) lst))
+
+(define myQ (list (list 3 4 5)))
+(let iter ([i 0] [res empty-stream] [myQ myQ])
+  (if (= i 100) (stream->list (stream-take res 100))
+  (iter (+ i 1) (stream-append res (list (car myQ))) (cdr (append-element (multiply T3 (car myQ)) (append-element (multiply T2 (car myQ)) (append-element (multiply T1 (car myQ)) myQ))))
+   )
+  )
+  )
